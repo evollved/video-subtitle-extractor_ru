@@ -1,4 +1,4 @@
-简体中文 | [English](README_en.md)
+简体中文 | [English](README_en.md) | [Русский](README_ru.md)
 
 ## 项目简介
 
@@ -34,7 +34,7 @@ Video-subtitle-extractor (VSE) 是一款将视频中的硬字幕提取为外挂�
 
 **使用说明**：
 
-- 有使用问题请加群讨论，QQ群：210150985（已满）、806152575（已满）、816881808（已满）、295894827
+- 有使用问题请加群讨论，QQ群：210150985、816881808
 
 - 点击【打开】后选择视频文件，调整字幕区域，点击【运行】
   - 单文件提取：打开文件的时候选择**单个**视频
@@ -87,27 +87,6 @@ Video-subtitle-extractor (VSE) 是一款将视频中的硬字幕提取为外挂�
 > **有任何改进意见请在ISSUES和DISCUSSION中提出**
 
 
-
-**预构建包对比说明**：
-|       预构建包名          | Python  | Paddle | 环境                          | 支持的计算能力范围|
-|---------------|------------|--------------|-----------------------------|----------|
-| `vse-windows-cpu.7z`  | 3.12       | 3.0rc1       | 无 GPU，CPU 运行             | 通用 |
-| `vse-windows-directml.7z`  | 3.12       | 3.0rc1       | Windows 非Nvidia显卡             | 通用 |
-| `vse-windows-nvidia-cuda-10.2.7z` | 3.11       | 2.5.2        | CUDA 10.2   | 3.0 – 7.5 |
-| `vse-windows-nvidia-cuda-11.8.7z` | 3.12       | 3.0rc1       | CUDA 11.8   | 3.5 – 8.9 |
-| `vse-windows-nvidia-cuda-12.3.7z` | 3.12       | 3.0rc1       | CUDA 12.3   | 5.0 – 9.0 |
-
-> NVIDIA官方提供了各GPU型号的计算能力列表，您可以参考链接: [CUDA GPUs](https://developer.nvidia.com/cuda-gpus) 查看你的GPU适合哪个CUDA版本
-
-**识别模式选择说明**：
-|    模式名称    | GPU | OCR模型尺寸 | 字幕检测引擎 | 备注 |
-|---------------|-----|---------|------|------|
-|    快速        | 有/无 | 迷你  | VideoSubFinder | |
-|    自动  | 有| 大  | VideoSubFinder |  推荐   |
-|    自动  | 无| 迷你  | VideoSubFinder |  推荐   |
-|    精准        | 有/无| 大  | VSE | 非常慢 |
-> Windows/Linux环境下字幕检测引擎都是VideoSubFinder
-
 ## 演示
 
 - GUI版：
@@ -130,128 +109,127 @@ Video-subtitle-extractor (VSE) 是一款将视频中的硬字幕提取为外挂�
 
 ## 源码使用说明
 
-#### 1. 安装 Python
+#### 1. 下载安装Miniconda 
 
-请确保您已经安装了 Python 3.12+。
+- Windows: <a href="https://repo.anaconda.com/miniconda/Miniconda3-py312_24.7.1-0-Windows-x86_64.exe">Miniconda3-py312_24.7.1-0-Windows-x86_64.exe</a>
 
-- Windows 用户可以前往 [Python 官网](https://www.python.org/downloads/windows/) 下载并安装 Python。
-- MacOS 用户可以使用 Homebrew 安装：
-  ```shell
-  brew install python@3.12
-  ```
-- Linux 用户可以使用包管理器安装，例如 Ubuntu/Debian：
-  ```shell
-  sudo apt update && sudo apt install python3.12 python3.12-venv python3.12-dev
-  ```
 
-#### 2. 安装依赖文件
+- MacOS：<a href="https://repo.anaconda.com/miniconda/Miniconda3-py312_24.7.1-0-MacOSX-x86_64.pkg">Miniconda3-py312_24.7.1-0-MacOSX-x86_64.pkg</a>
 
-请使用虚拟环境来管理项目依赖，避免与系统环境冲突。
 
-（1）创建虚拟环境并激活
-```shell
-python -m venv videoEnv
-```
+- Linux: <a href="https://repo.anaconda.com/miniconda/Miniconda3-py312_24.7.1-0-Linux-x86_64.sh">Miniconda3-py312_24.7.1-0-Linux-x86_64.sh</a>
 
-- Windows：
-```shell
-videoEnv\\Scripts\\activate
-```
-- MacOS/Linux：
-```shell
-source videoEnv/bin/activate
-```
+#### 2. 创建并激活虚机环境
 
-#### 3. 创建并激活项目目录
-
-切换到源码所在目录：
+（1）切换到源码所在目录：
 ```shell
 cd <源码所在目录>
 ```
-> 例如：如果您的源代码放在 D 盘的 tools 文件夹下，并且源代码的文件夹名为 video-subtitle-extractor，则输入：
-> ```shell
-> cd D:/tools/video-subtitle-extractor-main
-> ```
+> 例如：如果你的源代码放在D盘的tools文件下，并且源代码的文件夹名为video-subtitle-extractor，就输入 ```cd D:/tools/video-subtitle-extractor-main```
 
-#### 4. 安装合适的运行环境
+（2）创建激活conda环境
+```shell
+conda create -n videoEnv python=3.12
+```
 
-本项目支持 CUDA（NVIDIA显卡加速）、CPU（无 GPU）、DirectML（AMD、Intel等GPU/APU加速）、ONNX四种运行模式。
+```shell
+conda activate videoEnv
+```
 
-##### (1) CUDA（NVIDIA 显卡用户）
+#### 3. 安装依赖文件
 
-> 请确保您的 NVIDIA 显卡驱动支持所选 CUDA 版本。
+请确保你已经安装 python 3.12+，使用conda创建项目虚拟环境并激活环境 (建议创建虚拟环境运行，以免后续出现问题)
+ 
+- 安装依赖:
 
-- 推荐 CUDA 11.8，对应 cuDNN 8.6.0。
-
-- 安装 CUDA：
-  - Windows：[CUDA 11.8 下载](https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_522.06_windows.exe)
-  - Linux：
-    ```shell
-    wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_520.61.05_linux.run
-    sudo sh cuda_11.8.0_520.61.05_linux.run
-    ```
-  - MacOS 不支持 CUDA。
-
-- 安装 cuDNN（CUDA 11.8 对应 cuDNN 8.6.0）：
-  - [Windows cuDNN 8.6.0 下载](https://developer.download.nvidia.cn/compute/redist/cudnn/v8.6.0/local_installers/11.8/cudnn-windows-x86_64-8.6.0.163_cuda11-archive.zip)
-  - [Linux cuDNN 8.6.0 下载](https://developer.download.nvidia.cn/compute/redist/cudnn/v8.6.0/local_installers/11.8/cudnn-linux-x86_64-8.6.0.163_cuda11-archive.tar.xz)
-  - 安装方法请参考 NVIDIA 官方文档。
-
-- 安装 PaddlePaddle GPU 版本（CUDA 11.8）：
   ```shell
-  pip install paddlepaddle-gpu==3.0.0rc1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
   pip install -r requirements.txt
   ```
 
-##### (2) DirectML（AMD、Intel等GPU/APU加速卡用户）
+- 安装CUDA和cuDNN
 
-- 适用于 Windows 设备的 AMD/NVIDIA/Intel GPU。
-- 安装 ONNX Runtime DirectML 版本：
-  ```shell
-  pip install paddlepaddle==3.0.0rc1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-  pip install -r requirements.txt
-  pip install -r requirements_directml.txt
-  ```
+> 请确保有拥有Nvidia的显卡，**30系列以上的显卡驱动可能不支持 cuda 11.2及以下版本的安装**
+>
+> 如果安装cuda 10.2，请对应安装7.6.5的cuDNN，并使用对应cuda版本的paddlepaddle，**请不要使用cuDNN v8.x 和 cuda 10.2的组合** 
+>
+> 如果安装cuda 11.2，请对应安装8.1.1的cuDNN，并使用对应cuda版本的paddlepaddle
+>
+> 如果安装cuda 11.6，请对应安装8.4.0的cuDNN，并使用对应cuda版本的paddlepaddle
+> 
+> 如果安装cuda 11.8，请对应安装8.6.0的cuDNN，并使用对应cuda版本的paddlepaddle
+> 
+> 如果安装cuda 12.0，请对应安装8.9.1的cuDNN，并使用对应cuda版本的paddlepaddle  
 
-##### (3) ONNX (适合macOS、AMD ROCm等环境加速用户, 基础环境与DirectML方式一致，未测试！)
 
-- 使用这个方式部署请勿反馈Issues
-- 适用于 Linux 或 macOS 设备的 AMD/Metal GPU/Apple Silicon GPU。
-- 安装 ONNX Runtime DirectML 版本：
-  ```shell
-  pip install paddlepaddle==3.0.0rc1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-  pip install -r requirements.txt
 
-  # 阅读文档 https://onnxruntime.ai/docs/execution-providers/
-  # 根据你的设备选择合适的执行后端, 参考requirements_directml.txt文件修改成合适你环境的依赖
 
-  # 例如:
-  # requirements_coreml.txt
-  #   paddle2onnx==1.3.1
-  #   onnxruntime-gpu==1.20.1
-  #   onnxruntime-coreml==1.13.1
 
-  pip install -r requirements_coreml.txt
-  ```
+  <details>
+      <summary>Linux用户</summary>
+      <h5>(1) 下载CUDA 11.7</h5>
+      <pre><code>wget https://developer.download.nvidia.com/compute/cuda/11.7.0/local_installers/cuda_11.7.0_515.43.04_linux.run</code></pre>
+      <h5>(2) 安装CUDA 11.7</h5>
+      <pre><code>sudo sh cuda_11.7.0_515.43.04_linux.run</code></pre>
+      <p>1. 输入accept</p>
+      <img src="https://i.328888.xyz/2023/03/31/iwVoeH.png" width="500" alt="">
+      <p>2. 选中CUDA Toolkit 11.7（如果你没有安装nvidia驱动则选中Driver，如果你已经安装了nvidia驱动请不要选中driver），之后选中install，回车</p>
+      <img src="https://i.328888.xyz/2023/03/31/iwVThJ.png" width="500" alt="">
+      <p>3. 添加环境变量</p>
+      <p>在 ~/.bashrc 加入以下内容</p>
+      <pre><code># CUDA
+  export PATH=/usr/local/cuda-11.7/bin${PATH:+:${PATH}}
+  export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}</code></pre>
+      <p>使其生效</p>
+      <pre><code>source ~/.bashrc</code></pre>
+      <h5>(3) 下载cuDNN 8.4.1</h5>
+      <p>国内：<a href="https://pan.baidu.com/s/1Gd_pSVzWfX1G7zCuqz6YYA">cudnn-linux-x86_64-8.4.1.50_cuda11.6-archive.tar.xz</a> 提取码：57mg</p>
+      <p>国外：<a href="https://github.com/YaoFANGUK/video-subtitle-extractor/releases/download/1.0.0/cudnn-linux-x86_64-8.4.1.50_cuda11.6-archive.tar.xz">cudnn-linux-x86_64-8.4.1.50_cuda11.6-archive.tar.xz</a></p>
+      <h5>(4) 安装cuDNN 8.4.1</h5>
+      <pre><code> tar -xf cudnn-linux-x86_64-8.4.1.50_cuda11.6-archive.tar.xz
+   mv cudnn-linux-x86_64-8.4.1.50_cuda11.6-archive cuda
+   sudo cp ./cuda/include/* /usr/local/cuda-11.7/include/
+   sudo cp ./cuda/lib/* /usr/local/cuda-11.7/lib64/
+   sudo chmod a+r /usr/local/cuda-11.7/lib64/*
+   sudo chmod a+r /usr/local/cuda-11.7/include/*</code></pre>
+  </details>
+  
+  <details>
+        <summary>Windows用户</summary>
+        <h5>(1) 下载CUDA 11.7</h5>
+        <a href="https://developer.download.nvidia.com/compute/cuda/11.7.0/local_installers/cuda_11.7.0_516.01_windows.exe">cuda_11.7.0_516.01_windows.exe</a>
+        <h5>(2) 安装CUDA 11.7</h5>
+        <h5>(3) 下载cuDNN 8.4.0</h5>
+        <p><a href="https://github.com/YaoFANGUK/video-subtitle-extractor/releases/download/1.0.0/cudnn-windows-x86_64-8.4.0.27_cuda11.6-archive.zip">cudnn-windows-x86_64-8.4.0.27_cuda11.6-archive.zip</a></p>
+        <h5>(4) 安装cuDNN 8.4.0</h5>
+        <p>
+           将cuDNN解压后的cuda文件夹中的bin, include, lib目录下的文件复制到C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\对应目录下
+        </p>
+    </details>
 
-##### (4) CPU 运行（无 GPU 加速）
 
-- 适用于没有 GPU 或不希望使用 GPU 的情况。
-- 直接安装 CPU 版本 PaddlePaddle：
-  ```shell
-  pip install paddlepaddle==3.0.0rc1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-  pip install -r requirements.txt
-  ```
+- 安装paddlepaddle:
 
-#### 5. 运行程序
+  - windows:
 
-- 运行图形化界面版本（GUI）
+      ```shell 
+      python -m pip install paddlepaddle-gpu==2.6.1.post117 -f https://www.paddlepaddle.org.cn/whl/windows/mkl/avx/stable.html
+      ```
+
+  - Linux:
+
+      ```shell
+      python -m pip install paddlepaddle-gpu==2.6.1.post117 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
+      ```
+  
+#### 4. 运行程序
+
+- 运行图形化界面版本(GUI)
 
 ```shell
 python gui.py
 ```
 
-- 运行命令行版本（CLI）
+- 运行命令行版本(CLI)
 
 ```shell
 python ./backend/main.py
@@ -314,8 +292,11 @@ python -m nuitka --standalone --windows-disable-console --mingw64 --lto no --inc
 
 ## 社区支持
 
-[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
-
+#### Jetbrains 全家桶支持
+本项目开发所使用的IDE由Jetbrains支持。
+<div align=center>
+  <a href="https://jb.gg/OpenSourceSupport"><img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains Logo (Main) logo." width="80"></a>
+</div>
 
 ## 赞助
 <img src="https://github.com/YaoFANGUK/video-subtitle-extractor/raw/main/design/sponsor.png" width="600">
@@ -325,7 +306,6 @@ python -m nuitka --standalone --windows-disable-console --mingw64 --lto no --inc
 | **伟                                     | 300.00 RMB | 金牌赞助席位 |
 | 周学彬                                     | 200.00 RMB | 金牌赞助席位 |
 | 轻抖哥                                     | 200.00 RMB | 金牌赞助席位 |
-| JACOB. 远志                                | 200.00 RMB | 金牌赞助席位 |
 | 爱东                                     | 100.00 RMB | 金牌赞助席位 |
 | **迪                                     | 100.00 RMB | 金牌赞助席位 |
 | ysjm                                   | 100.00 RMB | 金牌赞助席位 |
@@ -334,7 +314,6 @@ python -m nuitka --standalone --windows-disable-console --mingw64 --lto no --inc
 | [neoyxm](https://github.com/neoyxm)    | 50.00 RMB | 银牌赞助席位 |
 | 亦                                   | 50.00 RMB | 银牌赞助席位 |
 | 周昊                                   | 50.00 RMB | 银牌赞助席位 |
-| 曹虎男                                   | 50.00 RMB | 银牌赞助席位 |
 | 玛卡巴卡                                   | 35.00 RMB | 银牌赞助席位 |
 | 净心                                   | 30.00 RMB | 银牌赞助席位 |
 | ysjm                                   | 30.00 RMB | 银牌赞助席位 |
@@ -342,7 +321,6 @@ python -m nuitka --standalone --windows-disable-console --mingw64 --lto no --inc
 | 迷走神经病                                   | 30.00 RMB | 银牌赞助席位 |
 | [AcelXiao](https://github.com/acelxiao) | 20.00 RMB | 银牌赞助席位 |
 | 又是李啊    | 10.00 RMB | 铜牌赞助席位 |
-| 崔崔崔崔崔崔崔    | 10.00 RMB | 铜牌赞助席位 |
 | 匿名    | 8.80 RMB | 铜牌赞助席位 |
 | 落墨                                   | 6.00 RMB | 铜牌赞助席位 |
 | 未闻花名                                   | 5.00 RMB | 铜牌赞助席位 |
